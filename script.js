@@ -63,8 +63,9 @@ function addEventToCompletedBtn(completed_button) {
     sub.classList.add(...["task", "completed_task"]);
     completedTaskHolder.appendChild(sub);
 
-    let currentObj = TotalTasks.get(`A${targetDiv.id}`);
-    currentObj[`taskStatus`] = true;
+    let currentObj = TotalTasks.get(`A${sub.id}`);
+    currentObj.taskStatus = true;
+
     TotalTasks.set(`A${targetDiv.id}`, currentObj);
     storeMap();
 
@@ -73,11 +74,13 @@ function addEventToCompletedBtn(completed_button) {
 }
 
 // Function to Add Task in the paritcular Section
-function appendTaskToSection(parent, TaskObject) {
+function appendTaskToSection(parent, TaskObject, statusG) {
   // Create the new task div
   const taskDiv = document.createElement("div");
   taskDiv.id = TaskObject.id; // Set the ID attribute
-  if (parent == currentTaskHolder)
+  if (statusG) {
+    taskDiv.classList.add("completed_task", "task");
+  } else if (parent == currentTaskHolder)
     taskDiv.classList.add("ongoing_task", "task"); // Add classes
   else taskDiv.classList.add("pending_task", "task"); // Add classes
 
@@ -106,7 +109,10 @@ function appendTaskToSection(parent, TaskObject) {
   deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>'; // Add the trash icon
   addEventToDeleteBtn(deleteBtn);
 
-  buttonHolder.appendChild(completeBtn);
+  if (!statusG) {
+    buttonHolder.appendChild(completeBtn);
+  }
+
   buttonHolder.appendChild(deleteBtn);
 
   // Append child elements to the task div
@@ -119,6 +125,7 @@ function appendTaskToSection(parent, TaskObject) {
   parent.appendChild(taskDiv);
 
   TotalTasks.set(`A${TaskObject.id}`, TaskObject);
+
   storeMap();
   console.log("Task Added Successfully ✔️");
 }
@@ -151,10 +158,10 @@ function appendNewItem(event) {
 
   if (taskDate.value == currentDate) {
     // Add to Current Day Taks List
-    appendTaskToSection(currentTaskHolder, newTask);
+    appendTaskToSection(currentTaskHolder, newTask, false);
   } else {
     // Add to Upcoming Task List
-    appendTaskToSection(upcomingTaskHolder, newTask);
+    appendTaskToSection(upcomingTaskHolder, newTask, false);
   }
 }
 
@@ -180,11 +187,11 @@ function startApplication() {
     let dateVal = currentDate.split("-").reverse().join("-");
     console.log(value.taskStatus);
     if (value.taskStatus == true) {
-      appendTaskToSection(completedTaskHolder, value);
+      appendTaskToSection(completedTaskHolder, value, true);
     } else if (value.newTaskDate == dateVal) {
-      appendTaskToSection(currentTaskHolder, value);
+      appendTaskToSection(currentTaskHolder, value, false);
     } else {
-      appendTaskToSection(upcomingTaskHolder, value);
+      appendTaskToSection(upcomingTaskHolder, value, false);
     }
   }
 }
