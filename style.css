@@ -1,0 +1,71 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: poppins;
+}
+
+body {
+  background: rgb(238, 174, 202);
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
+}
+
+/* App Heading */
+.app_heading {
+  margin: 2%;
+  text-align: center;
+  color: black;
+  font-weight: 700;
+  font-size: 50px;
+  text-shadow: 4px 4px 4px rgba(255, 255, 255, 0.5);
+}
+
+/* Add Task Section */
+.input_holder {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+/* Todays Task Section */
+.todo_sub_heading {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+/* Tasks */
+.task {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 5px 20px;
+  font-size: 18px;
+  margin: 13px 3px;
+}
+
+.completed_task {
+  background-color: rgba(216, 255, 150, 0.578);
+  border: 2px solid rgba(216, 255, 150, 0.972);
+}
+
+.pending_task {
+  background-color: rgba(251, 222, 180, 0.672);
+  border: 2px solid rgb(255, 222, 173);
+}
+.ongoing_task {
+  background-color: rgba(53, 246, 181, 0.265);
+  /* border: 2px solid rgba(27, 244, 172, 0.793); */
+  border: 2px solid rgba(53, 246, 182, 0.559);
+}
+
+.btn:hover,
+.task:hover {
+  transition: all 0.2s ease-in-out;
+  transform: scale(1.05);
+  text-shadow: 0px 0px 10px rgba(255, 252, 252, 0.887);
+  box-shadow: 2px 3px 5px rgba(255, 252, 252, 0.5);
+}
