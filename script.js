@@ -190,5 +190,5 @@ function startApplication() {
 
 startApplication();
 alert(
-  `3 Tasks were provided initially for reference and wont be visible in localstorage and visible if page refreshed`
+  `3  Tasks were provided initially for reference and wont be visible in localstorage and visible if page refreshed`
 );
