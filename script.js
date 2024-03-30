@@ -178,7 +178,7 @@ function startApplication() {
 
   for (let [key, value] of TotalTasks) {
     let dateVal = currentDate.split("-").reverse().join("-");
-    if (value[taskStatus] == "true" || value[taskStatus] == true) {
+    if (value[taskStatus] == true) {
       appendTaskToSection(completedTaskHolder, value);
     } else if (value.newTaskDate == dateVal) {
       appendTaskToSection(currentTaskHolder, value);
@@ -190,5 +190,5 @@ function startApplication() {
 
 startApplication();
 alert(
-  `3  Tasks were provided initially for reference and wont be visible in localstorage and visible if page refreshed`
+  `3 Tasks were provided initially for reference and wont be visible in localstorage and visible if page refreshed`
 );
