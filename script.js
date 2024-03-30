@@ -178,7 +178,8 @@ function startApplication() {
 
   for (let [key, value] of TotalTasks) {
     let dateVal = currentDate.split("-").reverse().join("-");
-    if (value[taskStatus] == true) {
+    console.log(value.taskStatus);
+    if (value.taskStatus == true) {
       appendTaskToSection(completedTaskHolder, value);
     } else if (value.newTaskDate == dateVal) {
       appendTaskToSection(currentTaskHolder, value);
