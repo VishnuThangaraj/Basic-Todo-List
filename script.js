@@ -26,9 +26,7 @@ const completedButtons = [...document.getElementsByClassName(`finish_btn`)];
 
 // TaskList
 let totalTaskCount = 0;
-const currentTasks = [],
-  upcomingTasks = [],
-  completedTasks = [];
+var TotalTasks = new Map();
 
 // EventListener for DeleteButtons
 function addEventToDeleteBtn(delete_button) {
@@ -41,6 +39,9 @@ function addEventToDeleteBtn(delete_button) {
     let parentDiv = targetDiv.parentNode;
 
     parentDiv.removeChild(targetDiv);
+    TotalTasks.delete(`A${targetDiv.id}`);
+    storeMap();
+    console.log("Task Deleted Successfully ✔️");
   });
 }
 
@@ -61,6 +62,13 @@ function addEventToCompletedBtn(completed_button) {
     sub.classList.remove(...sub.classList);
     sub.classList.add(...["task", "completed_task"]);
     completedTaskHolder.appendChild(sub);
+
+    let currentObj = TotalTasks.get(`A${targetDiv.id}`);
+    currentObj[`taskStatus`] = true;
+    TotalTasks.set(`A${targetDiv.id}`, currentObj);
+    storeMap();
+
+    console.log("Task Moved to Completed ✔️");
   });
 }
 
@@ -110,6 +118,8 @@ function appendTaskToSection(parent, TaskObject) {
   // Append the task div to the parent
   parent.appendChild(taskDiv);
 
+  TotalTasks.set(`A${TaskObject.id}`, TaskObject);
+  storeMap();
   console.log("Task Added Successfully ✔️");
 }
 
@@ -135,18 +145,23 @@ function appendNewItem(event) {
     id: ++totalTaskCount,
     newTaskName: taskName.value,
     newTaskDate: taskDate.value.split("-").reverse().join("-"),
+    taskStatus: false,
     newTaskPriority: taskPriority.value,
   };
 
   if (taskDate.value == currentDate) {
     // Add to Current Day Taks List
-    currentTasks.push(newTask);
     appendTaskToSection(currentTaskHolder, newTask);
   } else {
     // Add to Upcoming Task List
-    upcomingTasks.push(newTask);
     appendTaskToSection(upcomingTaskHolder, newTask);
   }
+}
+
+// Function to store the map in local storage
+function storeMap() {
+  const serializedMap = JSON.stringify(Array.from(TotalTasks.entries()));
+  localStorage.setItem("TotalTasks", serializedMap);
 }
 
 function startApplication() {
@@ -156,6 +171,24 @@ function startApplication() {
   for (let comp_btn of completedButtons) {
     addEventToCompletedBtn(comp_btn);
   }
+
+  let storedData = localStorage.getItem("TotalTasks");
+  let parsedArray = JSON.parse(storedData);
+  TotalTasks = new Map(parsedArray);
+
+  for (let [key, value] of TotalTasks) {
+    let dateVal = currentDate.split("-").reverse().join("-");
+    if (value.taskStatus == true) {
+      appendTaskToSection(completedTaskHolder, value);
+    } else if (value.newTaskDate == dateVal) {
+      appendTaskToSection(currentTaskHolder, value);
+    } else {
+      appendTaskToSection(upcomingTaskHolder, value);
+    }
+  }
 }
 
 startApplication();
+alert(
+  `3 Tasks were provided initially for reference and wont be visible in localstorage and visible if page refreshed`
+);
